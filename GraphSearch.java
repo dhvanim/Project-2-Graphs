@@ -11,7 +11,7 @@ public class GraphSearch {
 		stack.push(start);
 		
 		ArrayList<Node> searched = new ArrayList<Node>();
-		DFSRec(searched, stack, end);
+		DFSRecHelper(searched, stack, end);
 		
 		if (!searched.contains(end)) //checks if end was found
 			return null;
@@ -19,7 +19,7 @@ public class GraphSearch {
 		return searched;
 	}
 
-	void DFSRec(ArrayList<Node> nodesVisited, Stack<Node> stack, final Node end) {	
+	void DFSRecHelper(ArrayList<Node> nodesVisited, Stack<Node> stack, final Node end) {	
 		if (stack.isEmpty()) 
 			return;
 		
@@ -29,7 +29,7 @@ public class GraphSearch {
 		for (int i = 0; i < node.neighbors.size(); i++) {
 			if (!nodesVisited.contains(node.neighbors.get(i))) {
 				stack.push(node.neighbors.get(i));
-				DFSRec(nodesVisited, stack, end);
+				DFSRecHelper(nodesVisited, stack, end);
 			}
 			if (nodesVisited.contains(end))		// checks if end found after each iteration
 				return;
@@ -60,10 +60,10 @@ public class GraphSearch {
 		ArrayList<Node> traversal = new ArrayList<Node>();
 		Iterator<Node> iter = graph.allNodes.iterator();
 		
-		return BFTRec(iter, queue, traversal);
+		return BFTRecHelper(iter, queue, traversal);
 	}
 	
-	ArrayList<Node> BFTRec(Iterator<Node> iter, Queue<Node> queue, ArrayList<Node> traversal) {
+	ArrayList<Node> BFTRecHelper(Iterator<Node> iter, Queue<Node> queue, ArrayList<Node> traversal) {
 
 		if (queue.isEmpty()) {		// if queue is empty, check next node
 			if (iter.hasNext()) {
@@ -73,7 +73,7 @@ public class GraphSearch {
 					queue.add(n);
 				}
 				else 			// if visited, recursively call BFT until all nodes checked
-					BFTRec(iter, queue, traversal);
+					BFTRecHelper(iter, queue, traversal);
 			}
 		}
 		
@@ -89,15 +89,15 @@ public class GraphSearch {
 			}
 		}
 		
-		return BFTRec(iter, queue, traversal);
+		return BFTRecHelper(iter, queue, traversal);
 	}
 	
 	ArrayList<Node> BFTIter(final Graph graph) {
 		Queue<Node> queue = new LinkedList<Node>();
 		ArrayList<Node> traversal = new ArrayList<Node>();
 		
-		for (Node node : graph.allNodes) {
-			if (!traversal.contains(node)) {
+		for (Node node : graph.allNodes) {  // iterate through all nodes
+			if (!traversal.contains(node)) {	// if not visited, add it and neighbors to queue
 				traversal.add(node);
 				queue.add(node);
 				while (!queue.isEmpty()) {
@@ -111,13 +111,13 @@ public class GraphSearch {
 					}
 				}
 			}
-		}		
+		}	
 		return traversal;
 	}
 	
 	void printGraphSearch(ArrayList<Node> search) {
 		for (Node n : search) 
-			System.out.print(n.val);
+			System.out.print(n.val + " ");
 		System.out.println();
 	}
 }

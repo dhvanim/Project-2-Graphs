@@ -9,8 +9,6 @@ public class GridNode {
 		this.paths = new Vector<GridNode>();
 	}
 	
-	int x;
-	int y;
-	int val;
+	int x, y, val;
 	Vector<GridNode> paths;
 }

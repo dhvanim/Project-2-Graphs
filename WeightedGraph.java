@@ -3,14 +3,11 @@ import java.util.HashSet;
 
 public class WeightedGraph {
 	
-	ArrayList<Node> allNodes = new ArrayList<Node>();
-	int N = 0;
-	
+	ArrayList<Node> allNodes = new ArrayList<Node>();	
 	
 	void addNode(final int nodeVal) {
 		Node node = new Node(nodeVal);
 		allNodes.add(node);
-		N++;
 	}
 	
 	void addWeightedEdge(final Node first, final Node second, final int edgeWeight) {
@@ -18,17 +15,16 @@ public class WeightedGraph {
 	}
 	
 	void removeDirectedEdge(final Node first, final Node second) {
-		for (Edge e : first.weightedNeighbors) {
+		for (Edge e : first.weightedNeighbors) 
 			if (e.dest == second) {
 				first.weightedNeighbors.remove(e);
 				return;
-			}
-		}
+			}	
 	}
 	
 	HashSet<Node> getAllNodes() {
 		HashSet<Node> hashset = new HashSet<Node>();
-		for (int i = 0; i < N; i++) 
+		for (int i = 0; i < allNodes.size(); i++) 
 			hashset.add(allNodes.get(i));
 		return hashset;
 	}
@@ -37,14 +33,12 @@ public class WeightedGraph {
 		HashSet<Node> hset = this.getAllNodes();
 		for (Node n : hset) {
 			System.out.print(n.val + ": ");
-			if(!n.weightedNeighbors.isEmpty()) {
-				int i = 0;
-				do {
-					Edge e = n.weightedNeighbors.get(i);
-					System.out.print("(" + e.dest.val + ":" + e.weight + ") ");
-					i++;
-				} while (i < n.weightedNeighbors.size());
+		
+			for (int i = 0; i < n.weightedNeighbors.size(); i++) {
+				Edge e = n.weightedNeighbors.get(i);
+				System.out.print("(" + e.dest.val + ":" + e.weight + ") ");
 			}
+			
 			System.out.println("");
 		}
 	}

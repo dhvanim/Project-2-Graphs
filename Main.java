@@ -37,7 +37,6 @@ public class Main {
 		GridGraph gg = createRandomGridGraph(100);
 		
 		astar(gg.allNodes.get(0), gg.allNodes.get(999));
-		
 	}
 	
 	
@@ -139,9 +138,8 @@ public class Main {
 		for (Edge e : start.weightedNeighbors) 
 			output.put(e.dest, infinity);
 		
-		Node curr = start;
 		
-		while(curr != null) {
+		for (Node curr = start; curr!= null; curr = minDistance(output, finalized)) {
 			
 			finalized.add(curr);
 			
@@ -153,13 +151,13 @@ public class Main {
 					if (d < output.get(e.dest)) 
 						output.replace(e.dest, d);	
 				}
-			}
-			curr = minDistance(output, finalized); // will return null if no other min exists
-		}	
+			}	
+		}
 		
 		return output;
 	}
 	
+	// returns null if no other min distance found
 	static Node minDistance(HashMap<Node, Integer> hmap, ArrayList<Node> finalized) {	
 		int dist = Integer.MAX_VALUE;
 		Node minNode = null;
@@ -173,20 +171,19 @@ public class Main {
 	}
 	
 	
-	// Question 6
+	/// Question 6
 	
 	static GridGraph createRandomGridGraph(int n) {
 		GridGraph g = new GridGraph();
 		Random random = new Random();
 		
-		int val = 0;
-		for (int i = 0; i < n; i++) {
+		for (int i = 0, val = 0; i < n; i++, val++) {
 			for (int j = 0; j < n; j++) {
-				g.addGridNode(i, j, val++);
+				g.addGridNode(i, j, val);
 			}
 		}		
 		
-		for (int i = 0; i < g.N; i++) {		// goes through the graph and checks for left and top neighbors only (if possible)
+		for (int i = 0; i < g.allNodes.size(); i++) {		// goes through the graph and checks for left and top neighbors only (if possible)
 			GridNode curr = g.allNodes.get(i);
 			boolean left = ((i + 1) % n == 0) ? false : true;
 			boolean up = (i + n) >= n*n ? false : true;

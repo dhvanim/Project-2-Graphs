@@ -4,12 +4,10 @@ import java.util.HashSet;
 public class GridGraph {
 	
 	ArrayList<GridNode> allNodes = new ArrayList<GridNode>();
-	int N = 0;
 	
 	void addGridNode(final int x, final int y, final int nodeVal) {
 		GridNode gn = new GridNode(x, y, nodeVal);
 		allNodes.add(gn);
-		N++;
 	}
 	
 	void addUndirectedEdge(final GridNode first, final GridNode second) {
@@ -21,13 +19,16 @@ public class GridGraph {
 	}
 	
 	void removeUndirectedEdge(final GridNode first, final GridNode second) {
+		if (!first.paths.contains(second))
+			return;
+		
 		first.paths.remove(second);
 		second.paths.remove(first);
 	}
 	
 	HashSet<GridNode> getAllNodes() {
 		HashSet<GridNode> hashset = new HashSet<GridNode>();
-		for (int i = 0; i < N; i++) 
+		for (int i = 0; i < allNodes.size(); i++) 
 			hashset.add(allNodes.get(i));
 		return hashset;
 	}
@@ -42,39 +43,23 @@ public class GridGraph {
 			if (first.x == second.x + 1 || first.x == second.x - 1) {
 				return true;	
 			}
-			
 		}
+		
 		return false;
 	}
 	
-	ArrayList<GridNode> getNeighbors(GridNode node, int n) {
-		ArrayList<GridNode> neighbors = new ArrayList<GridNode>();
-		int pos = node.val;
-		
-		if (pos - n >= 0) 
-			neighbors.add(allNodes.get(pos - n));
-		if (pos + n  < n*n)
-			neighbors.add(allNodes.get(pos + n));
-		if ((pos + 1) % n != 0) 
-			neighbors.add(allNodes.get(pos + 1));
-		if (pos % n != 0)
-			neighbors.add(allNodes.get(pos - 1));
-		
-		return neighbors;
-	}
+
 	
 	void printAllNodes() {
 		HashSet<GridNode> hset = this.getAllNodes();
 		for (GridNode n : hset) {
 			System.out.print("(" + n.x + "," + n.y + ")  :  ");
-			if(!n.paths.isEmpty()) {
-				int i = 0;
-				do {
-					GridNode e = n.paths.get(i);
-					System.out.print("(" + e.x + "," + e.y + ") ");
-					i++;
-				} while (i < n.paths.size());
+			
+			for (int i = 0; i < n.paths.size(); i++) {
+				GridNode e = n.paths.get(i);
+				System.out.print("(" + e.x + "," + e.y + ") ");
 			}
+			
 			System.out.println("");
 		}
 	}

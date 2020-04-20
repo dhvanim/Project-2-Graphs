@@ -12,10 +12,10 @@ public class TopSort {
 		ArrayList<Node> output = new ArrayList<Node>();
 		Queue<Node> queue = new LinkedList<Node>();
 
-		for (int i = 0; i < graph.N; i++) 
+		for (int i = 0; i < graph.allNodes.size(); i++) 
 			hmap.put(graph.allNodes.get(i), 0);
 		
-		for (int i = 0; i < graph.N; i ++) {
+		for (int i = 0; i < graph.allNodes.size(); i ++) {
 			Vector<Node> temp = graph.allNodes.get(i).neighbors;
 			for (Node node : temp) {
 				hmap.replace(node, hmap.get(node) + 1);
@@ -49,7 +49,7 @@ public class TopSort {
 		
 		for (Node v: graph.allNodes) {
 			if (!visited.contains(v))
-				mDFS(v, stack, visited);
+				mDFSHelper(v, stack, visited);
 		}
 		
 		int size = stack.size();
@@ -58,11 +58,11 @@ public class TopSort {
 		return output;
 	}
 	
-	void mDFS(Node v, Stack<Node> stack, Queue<Node> visited) {
+	void mDFSHelper(Node v, Stack<Node> stack, Queue<Node> visited) {
 		visited.add(v);
 		for (Node n : v.neighbors) {
 			if (!visited.contains(n)) 
-				mDFS(n, stack, visited);
+				mDFSHelper(n, stack, visited);
 		}
 		stack.add(v);
 	}
